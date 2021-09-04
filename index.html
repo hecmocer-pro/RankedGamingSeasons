@@ -86,6 +86,12 @@
 }
   </style>
 
+  <div class="description">
+    <div>
+      <div>Keep track of the ranked seasons from your favourite games!</div>
+      <div>Ordered by those finishing earlier</div>
+    </div>
+  </div>
   <div class="container" id="insertionPoint"></div>
   <div class="bottom-spacing"></div>
 
@@ -203,6 +209,18 @@
     .bottom-spacing {
       height: 120px;
       width: 100%;
+    }
+
+    .description {
+      font-size: 32px;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      font-weight: bold;
+      width: calc(100% - 64px);
+      align-items: center;
+      margin-top: 48px;
+      line-height: 2;
     }
 
     @media only screen and (max-width: 1380px) {
