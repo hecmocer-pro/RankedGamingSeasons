@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RGS | Ranked Game Seasons</title>
+  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <meta name="theme-color" content="#EEEEEE" />
+  <meta name="application-name" content="Hecmocer">
+  <meta name="description" content="Keep track of the ranked seasons of your favourite games!">
+  <meta name="keywords"
+    content="Hecmocer, Hector, Moreno, Hector Moreno, ranked, game, gaming, season, seasons, ladder, Tracker, Web, Application, Frontend, MTGA, Hearthstone, LoR, Legends of Runeterra, Magic Online, Magic Arena, MTG Arena">
+  <meta name="author" content="Hecmocer">
+  <link rel="manifest" href="manifest.json">
+</head>
+
+<body style="visibility: hidden;" onload="js_Load()">
+
+  <!-- fonts -->
+  <style>
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/montserrat/v15/JTURjIg1_i6t8kCHKm45_cJD3gTD_u50.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/montserrat/v15/JTURjIg1_i6t8kCHKm45_cJD3g3D_u50.woff2) format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/montserrat/v15/JTURjIg1_i6t8kCHKm45_cJD3gbD_u50.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/montserrat/v15/JTURjIg1_i6t8kCHKm45_cJD3gfD_u50.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/montserrat/v15/JTURjIg1_i6t8kCHKm45_cJD3gnD_g.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Overpass Mono';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/overpassmono/v6/_Xm3-H86tzKDdAPa-KPQZ-AC3oSWo_6XBkZf.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Overpass Mono';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/overpassmono/v6/_Xm3-H86tzKDdAPa-KPQZ-AC3oSWo_CXBg.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+  </style>
+
+  <div class="container" id="insertionPoint"></div>
+
+  <style>
+
+body {
+      background: linear-gradient(to right, hsl(192deg 30% 75%), hsl(192deg 30% 90%));
+      margin: 0;
+      display: flex;
+      background-color: #eee;
+
+      font-family: 'Montserrat', sans-serif;
+      user-select: none;
+    }
+
+    .container {
+      display: grid;
+      align-items: center;
+      column-gap: 120px;
+      grid-template-columns: repeat(auto-fill, minmax(266px, 1fr));
+      padding: 0 60px;
+      margin: 128px 0;
+      width: 100%;
+      grid-row-gap: 64px;
+    }
+
+    .game-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: column;
+      padding: 64px 16px;
+      background-color: white;
+      border-radius: 5px;
+      box-shadow: 1px 1px 4px #888;
+      border: solid 1px #888;
+      min-width: 264px;
+      height: calc(100% - 128px);
+    }
+
+    .game-container:hover {
+      box-shadow: 1px 1px 8px #888;
+    }
+
+    .logo-container {
+      margin: 24px 0;
+    }
+
+    .logo {
+      max-height: 150px;
+      height: 100%;
+    }
+
+    .info-content {
+      font-size: 64px;
+      font-family: 'Overpass Mono', monospace;
+      text-align: center;
+    }
+
+    .game-name {
+      font-size: 24px;
+      text-align: center;
+      padding: 0 32px;
+    }
+
+    .info-label {
+      color: #555;
+      text-align: center;
+    }
+
+    .lowersection,
+    .uppersection {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .uppersection {
+      height: 100%;
+    }
+
+    .quest-remaining-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .weeks-left {
+      font-size: 18px;
+      margin-bottom: 24px;
+    }
+
+    .reset-date,
+    .last-reset,
+    .current-season {
+      font-size: 32px;
+    }
+
+    .info {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      margin: 8px 0;
+    }
+
+    @media only screen and (max-width: 1380px) {
+      body {
+        background: linear-gradient(to right, hsl(192deg 82% 87%), hsl(192deg 60% 90%));
+        margin: 0;
+      }
+
+      .container {
+        column-gap: 0;
+        row-gap: 32px;
+        grid-template-rows: repeat(auto-fill, minmax(520px, 1fr));
+        grid-template-columns: none;
+        padding: 0 16px;
+        width: 100%;
+        margin-top: 32px;
+      }
+
+      .game-container {
+        padding: 16px;
+        height: calc(100% - 32px);
+        width: calc(100% - 32px);
+        position: relative;
+        box-shadow: 1px 1px 8px rgb(0 0 0 / 70%);
+        border: solid 1px rgb(0 0 0 / 70%);
+      }
+
+      .uppersection {
+        height: 100%;
+        flex-direction: column;
+        min-width: 250px;
+      }
+
+      .lowersection {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-direction: row;
+        width: 100%;
+      }
+
+      .logo-container {
+        position: absolute;
+        opacity: 0.2;
+        height: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+      }
+
+      .logo {
+        max-height: 150px;
+        height: 100%;
+        max-width: 220px;
+        transform: scale(1.15);
+      }
+
+      .info-label {
+        width: 120px;
+      }
+
+      .info-content {
+        font-weight: bold;
+      }
+
+      .quest-remaining-container {
+        position: relative;
+      }
+    }
+  </style>
+
+
+  <!-- auxfn.js -->
+  <script>
+    const generateHtml = function(games) {
+      return games.map(generateHtmlForOneGame).join('')
+    }
+
+
+    const generateHtmlForOneGame = function(game) {
+      return `
+      <div id="hsw" class="game-container" title="${game.name}">
+        <div class="uppersection">
+          <div class="game-name">${game.name}</div>
+        </div>
+        <div class="lowersection">
+          <div class="quest-remaining-container">
+            <div class="logo-container">
+              <img src="${game.logo}" alt="${game.name} logo" class="logo">
+            </div>
+            <div class="info">
+              <div class="info-label">Days left</div>
+              <div class="info-content days-left">${game.daysUntilReset}</div>
+              <div class="weeks-left">(${game.weeksUntilReset} weeks)</div>
+            </div>
+            <div class="info">
+              <div class="info-label">Current Season</div>
+              <div class="info-content current-season">${game.currentSeason}</div>
+            </div>
+            <div class="info">
+              <div class="info-label">Resets on</div>
+              <div class="info-content reset-date">${game.seasonReset}</div>
+            </div>
+            <div class="info">
+              <div class="info-label">Last reset was</div>
+              <div class="info-content last-reset">${game.lastResetDate.toLocaleDateString()}</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div>${game.resetPeriodicity}</div>
+          <div>${game.resetPeriodicityMore}</div>
+        </div>
+      </div>
+      `
+    }
+
+    const insertHtml = function(content) {
+      document.querySelector('#insertionPoint').innerHTML = content;
+    }
+
+    const calculateDaysUntilReset = function(game) {
+      const diffInTime = game.seasonResetDate.getTime() - (today).getTime();
+      const diffInDays = Math.floor(diffInTime / (1000 * 3600 * 24));
+      const diffInWeeks = Math.floor(diffInTime / (1000 * 3600 * 24) / 7);
+      game.daysUntilReset = diffInDays;
+      game.weeksUntilReset = diffInWeeks;
+      return game;
+    }
+
+    const sortByFieldDaysUntilReset = function(a, b) {
+      const aField = a.daysUntilReset;
+      const bField = b.daysUntilReset;
+
+      if (aField < bField) {
+        return -1
+      } else if (aField >= bField) {
+        return 1
+      }
+    }
+
+    const generateCSS = function(cssText) {
+      var style = document.createElement('style');
+      style.type = 'text/css';
+      style.innerHTML = cssText;
+      document.getElementsByTagName('head')[0].appendChild(style);
+    }
+
+  </script>
+
+  <!-- main.js -->
+  <script>
+
+    const today = new Date()
+
+    const games = [
+      {
+        name: 'League of Legends',
+        currentSeason: 'Season 11',
+        lastResetDate: new Date('2021/01/08'),
+        seasonReset: '2nd week of November',
+        seasonResetDate: new Date('2021/11/08'),
+        resetPeriodicity: 'Resets every year',
+        resetPeriodicityMore: '<a target="_blank" href="https://dotesports.com/league-of-legends/news/when-does-league-of-legends-season-11-end#:~:text=Aside%20from%C2%A0League%E2%80%99s%20first%20season%2C%20all%20of%20them%20ended%20during%20the%20second%20week%20of%20November.">at 2nd week of november</a>',
+        daysUntilReset: null, // calculated by function calculateDaysUntilReset
+        logo: 'gameLogos/hsLogo_512.png',
+      },
+      // {
+      //   name: 'Legends of Runeterra',
+      //   currentSeason: 'TBD2',
+      //   lastResetDate: new Date(),
+      //   seasonReset: 'TBD3',
+      //   seasonResetDate: new Date(),
+      //   resetPeriodicity: 'TBD4',
+      //   resetPeriodicityMore: '<a target="_blank" href="">TBD5</a>',
+      //   daysUntilReset: null, // calculated by function calculateDaysUntilReset
+      //   logo: 'TBD6',
+      // },
+      // {
+      //   name: 'Hearthstone',
+      //   currentSeason: 'TBD2',
+      //   lastResetDate: new Date(),
+      //   seasonReset: 'TBD3',
+      //   seasonResetDate: new Date(),
+      //   resetPeriodicity: 'TBD4',
+      //   resetPeriodicityMore: '<a target="_blank" href="">TBD5</a>',
+      //   daysUntilReset: null, // calculated by function calculateDaysUntilReset
+      //   logo: 'TBD6',
+      // },
+      // {
+      //   name: 'MTGA',
+      //   currentSeason: 'TBD2',
+      //   lastResetDate: new Date(),
+      //   seasonReset: 'TBD3',
+      //   seasonResetDate: new Date(),
+      //   resetPeriodicity: 'TBD4',
+      //   resetPeriodicityMore: '<a target="_blank" href="">TBD5</a>',
+      //   daysUntilReset: null, // calculated by function calculateDaysUntilReset
+      //   logo: 'TBD6',
+      // },
+      // {
+      //   name: 'Apex Legends',
+      //   currentSeason: 'TBD2',
+      //   lastResetDate: new Date(),
+      //   seasonReset: 'TBD3',
+      //   seasonResetDate: new Date(),
+      //   resetPeriodicity: 'TBD4',
+      //   resetPeriodicityMore: '<a target="_blank" href="">TBD5</a>',
+      //   daysUntilReset: null, // calculated by function calculateDaysUntilReset
+      //   logo: 'TBD6',
+      // },
+      // {
+      //   name: 'Fortnite',
+      //   currentSeason: 'TBD2',
+      //   lastResetDate: new Date(),
+      //   seasonReset: 'TBD3',
+      //   seasonResetDate: new Date(),
+      //   resetPeriodicity: 'TBD4',
+      //   resetPeriodicityMore: '<a target="_blank" href="">TBD5</a>',
+      //   daysUntilReset: null, // calculated by function calculateDaysUntilReset
+      //   logo: 'TBD6',
+      // },
+      // {
+      //   name: 'Overwatch',
+      //   currentSeason: 'TBD2',
+      //   lastResetDate: new Date(),
+      //   seasonReset: 'TBD3',
+      //   seasonResetDate: new Date(),
+      //   resetPeriodicity: 'TBD4',
+      //   resetPeriodicityMore: '<a target="_blank" href="">TBD5</a>',
+      //   daysUntilReset: null, // calculated by function calculateDaysUntilReset
+      //   logo: 'TBD6',
+      // },
+      // {
+      //   name: 'Heroes of the Storm',
+      //   currentSeason: 'TBD2',
+      //   lastResetDate: new Date(),
+      //   seasonReset: 'TBD3',
+      //   seasonResetDate: new Date(),
+      //   resetPeriodicity: 'TBD4',
+      //   resetPeriodicityMore: '<a target="_blank" href="">TBD5</a>',
+      //   daysUntilReset: null, // calculated by function calculateDaysUntilReset
+      //   logo: 'TBD6',
+      // },
+      // {
+      //   name: 'Pokemon Unite',
+      //   currentSeason: 'TBD2',
+      //   lastResetDate: new Date(),
+      //   seasonReset: 'TBD3',
+      //   seasonResetDate: new Date(),
+      //   resetPeriodicity: 'TBD4',
+      //   resetPeriodicityMore: '<a target="_blank" href="">TBD5</a>',
+      //   daysUntilReset: null, // calculated by function calculateDaysUntilReset
+      //   logo: 'TBD6',
+      // },
+      // {
+      //   name: 'Call of Duty: Warzone',
+      //   currentSeason: 'TBD2',
+      //   lastResetDate: new Date(),
+      //   seasonReset: 'TBD3',
+      //   seasonResetDate: new Date(),
+      //   resetPeriodicity: 'TBD4',
+      //   resetPeriodicityMore: '<a target="_blank" href="">TBD5</a>',
+      //   daysUntilReset: null, // calculated by function calculateDaysUntilReset
+      //   logo: 'TBD6',
+      // },
+      // {
+      //   name: 'Teamfight Tactics',
+      //   currentSeason: 'TBD2',
+      //   lastResetDate: new Date(),
+      //   seasonReset: 'TBD3',
+      //   seasonResetDate: new Date(),
+      //   resetPeriodicity: 'TBD4',
+      //   resetPeriodicityMore: '<a target="_blank" href="">TBD5</a>',
+      //   daysUntilReset: null, // calculated by function calculateDaysUntilReset
+      //   logo: 'TBD6',
+      // },
+      // {
+      //   name: 'Valorant',
+      //   currentSeason: 'TBD2',
+      //   lastResetDate: new Date(),
+      //   seasonReset: 'TBD3',
+      //   seasonResetDate: new Date(),
+      //   resetPeriodicity: 'TBD4',
+      //   resetPeriodicityMore: '<a target="_blank" href="">TBD5</a>',
+      //   daysUntilReset: null, // calculated by function calculateDaysUntilReset
+      //   logo: 'TBD6',
+      // },
+      // {
+      //   name: 'DOTA 2',
+      //   currentSeason: 'TBD2',
+      //   lastResetDate: new Date(),
+      //   seasonReset: 'TBD3',
+      //   seasonResetDate: new Date(),
+      //   resetPeriodicity: 'TBD4',
+      //   resetPeriodicityMore: '<a target="_blank" href="">TBD5</a>',
+      //   daysUntilReset: null, // calculated by function calculateDaysUntilReset
+      //   logo: 'TBD6',
+      // },
+    ]
+
+    const cssText = ``
+
+    insertHtml(generateHtml(games.map(calculateDaysUntilReset).sort(sortByFieldDaysUntilReset)))
+
+    generateCSS(cssText)
+
+    window.js_Load = function() {
+      document.body.style.visibility='visible';
+    }
+
+  </script>
+
+  <!-- swInit.js -->
+  <script>
+    try {
+      window.addEventListener("load", () => {
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.register("/service-worker.js");
+        }
+      });
+    } catch {}
+  </script>
+
+
+</body>
+
+</html>
