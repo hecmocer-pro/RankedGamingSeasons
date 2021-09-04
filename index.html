@@ -87,14 +87,17 @@
   </style>
 
   <div class="container" id="insertionPoint"></div>
+  <div class="bottom-spacing"></div>
 
   <style>
 
-body {
+    body {
       background: linear-gradient(to right, hsl(192deg 30% 75%), hsl(192deg 30% 90%));
       margin: 0;
       display: flex;
       background-color: #eee;
+      flex-direction: column;
+      padding: 0 16px;
 
       font-family: 'Montserrat', sans-serif;
       user-select: none;
@@ -105,10 +108,10 @@ body {
       align-items: center;
       column-gap: 120px;
       grid-template-columns: repeat(auto-fill, minmax(266px, 1fr));
-      padding: 0 60px;
+      padding: 0 44px;
       margin: 128px 0;
-      width: 100%;
       grid-row-gap: 64px;
+      padding-bottom: 120px;
     }
 
     .game-container {
@@ -131,11 +134,15 @@ body {
 
     .logo-container {
       margin: 24px 0;
+      height: 150px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .logo {
       max-height: 150px;
-      height: 100%;
+      max-width: 100%;
     }
 
     .info-content {
@@ -163,10 +170,6 @@ body {
       flex-direction: column;
     }
 
-    .uppersection {
-      height: 100%;
-    }
-
     .quest-remaining-container {
       display: flex;
       justify-content: center;
@@ -187,10 +190,19 @@ body {
 
     .info {
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
       flex-direction: column;
       margin: 8px 0;
+    }
+
+    .info:not(:last-child) {
+      min-height: 120px;
+    }
+
+    .bottom-spacing {
+      height: 120px;
+      width: 100%;
     }
 
     @media only screen and (max-width: 1380px) {
@@ -202,11 +214,11 @@ body {
       .container {
         column-gap: 0;
         row-gap: 32px;
-        grid-template-rows: repeat(auto-fill, minmax(520px, 1fr));
+        grid-template-rows: repeat(auto-fill, minmax(700px, 1fr));
         grid-template-columns: none;
         padding: 0 16px;
-        width: 100%;
         margin-top: 32px;
+        padding-bottom: 120px;
       }
 
       .game-container {
@@ -278,8 +290,6 @@ body {
       <div id="hsw" class="game-container" title="${game.name}">
         <div class="uppersection">
           <div class="game-name">${game.name}</div>
-        </div>
-        <div class="lowersection">
           <div class="quest-remaining-container">
             <div class="logo-container">
               <img src="${game.logo}" alt="${game.name} logo" class="logo">
@@ -289,6 +299,10 @@ body {
               <div class="info-content days-left">${game.daysUntilReset}</div>
               <div class="weeks-left">(${game.weeksUntilReset} weeks)</div>
             </div>
+          </div>
+        </div>
+        <div class="lowersection">
+          <div class="quest-remaining-container">
             <div class="info">
               <div class="info-label">Current Season</div>
               <div class="info-content current-season">${game.currentSeason}</div>
@@ -354,145 +368,123 @@ body {
         name: 'League of Legends',
         currentSeason: 'Season 11',
         lastResetDate: new Date('2021/01/08'),
-        seasonReset: '2nd week of November',
+        seasonReset: 'Estimated<br> 2nd week November',
         seasonResetDate: new Date('2021/11/08'),
         resetPeriodicity: 'Resets every year',
         resetPeriodicityMore: '<a target="_blank" href="https://dotesports.com/league-of-legends/news/when-does-league-of-legends-season-11-end#:~:text=Aside%20from%C2%A0League%E2%80%99s%20first%20season%2C%20all%20of%20them%20ended%20during%20the%20second%20week%20of%20November.">at 2nd week of november</a>',
         daysUntilReset: null, // calculated by function calculateDaysUntilReset
+        logo: 'gameLogos/lolLogo.png',
+      },
+      {
+        name: 'Legends of Runeterra',
+        currentSeason: 'Beyond the Bandlewood',
+        lastResetDate: new Date('2021/08/25'),
+        seasonReset: 'Estimated<br>late October',
+        seasonResetDate: new Date('2021/10/25'),
+        resetPeriodicity: 'Resets every 2 months',
+        resetPeriodicityMore: '<a target="_blank" href="https://leagueoflegends.fandom.com/wiki/Rank_(Legends_of_Runeterra)#End_of_Season">Awards + info</a>',
+        daysUntilReset: null, // calculated by function calculateDaysUntilReset
+        logo: 'gameLogos/lorLogo_512.png',
+      },
+      {
+        name: 'Hearthstone',
+        currentSeason: 'Year of the Gryphon',
+        lastResetDate: new Date('2021/09/01'),
+        seasonReset: 'End of current month',
+        seasonResetDate: new Date('2021/10/01'),
+        resetPeriodicity: 'Resets every month',
+        resetPeriodicityMore: '<a target="_blank" href="https://www.pcgamer.com/new-hearthstone-ranking-system/">Awards + info</a>',
+        daysUntilReset: null, // calculated by function calculateDaysUntilReset
         logo: 'gameLogos/hsLogo_512.png',
       },
-      // {
-      //   name: 'Legends of Runeterra',
-      //   currentSeason: 'TBD2',
-      //   lastResetDate: new Date(),
-      //   seasonReset: 'TBD3',
-      //   seasonResetDate: new Date(),
-      //   resetPeriodicity: 'TBD4',
-      //   resetPeriodicityMore: '<a target="_blank" href="">TBD5</a>',
-      //   daysUntilReset: null, // calculated by function calculateDaysUntilReset
-      //   logo: 'TBD6',
-      // },
-      // {
-      //   name: 'Hearthstone',
-      //   currentSeason: 'TBD2',
-      //   lastResetDate: new Date(),
-      //   seasonReset: 'TBD3',
-      //   seasonResetDate: new Date(),
-      //   resetPeriodicity: 'TBD4',
-      //   resetPeriodicityMore: '<a target="_blank" href="">TBD5</a>',
-      //   daysUntilReset: null, // calculated by function calculateDaysUntilReset
-      //   logo: 'TBD6',
-      // },
-      // {
-      //   name: 'MTGA',
-      //   currentSeason: 'TBD2',
-      //   lastResetDate: new Date(),
-      //   seasonReset: 'TBD3',
-      //   seasonResetDate: new Date(),
-      //   resetPeriodicity: 'TBD4',
-      //   resetPeriodicityMore: '<a target="_blank" href="">TBD5</a>',
-      //   daysUntilReset: null, // calculated by function calculateDaysUntilReset
-      //   logo: 'TBD6',
-      // },
-      // {
-      //   name: 'Apex Legends',
-      //   currentSeason: 'TBD2',
-      //   lastResetDate: new Date(),
-      //   seasonReset: 'TBD3',
-      //   seasonResetDate: new Date(),
-      //   resetPeriodicity: 'TBD4',
-      //   resetPeriodicityMore: '<a target="_blank" href="">TBD5</a>',
-      //   daysUntilReset: null, // calculated by function calculateDaysUntilReset
-      //   logo: 'TBD6',
-      // },
-      // {
-      //   name: 'Fortnite',
-      //   currentSeason: 'TBD2',
-      //   lastResetDate: new Date(),
-      //   seasonReset: 'TBD3',
-      //   seasonResetDate: new Date(),
-      //   resetPeriodicity: 'TBD4',
-      //   resetPeriodicityMore: '<a target="_blank" href="">TBD5</a>',
-      //   daysUntilReset: null, // calculated by function calculateDaysUntilReset
-      //   logo: 'TBD6',
-      // },
-      // {
-      //   name: 'Overwatch',
-      //   currentSeason: 'TBD2',
-      //   lastResetDate: new Date(),
-      //   seasonReset: 'TBD3',
-      //   seasonResetDate: new Date(),
-      //   resetPeriodicity: 'TBD4',
-      //   resetPeriodicityMore: '<a target="_blank" href="">TBD5</a>',
-      //   daysUntilReset: null, // calculated by function calculateDaysUntilReset
-      //   logo: 'TBD6',
-      // },
-      // {
-      //   name: 'Heroes of the Storm',
-      //   currentSeason: 'TBD2',
-      //   lastResetDate: new Date(),
-      //   seasonReset: 'TBD3',
-      //   seasonResetDate: new Date(),
-      //   resetPeriodicity: 'TBD4',
-      //   resetPeriodicityMore: '<a target="_blank" href="">TBD5</a>',
-      //   daysUntilReset: null, // calculated by function calculateDaysUntilReset
-      //   logo: 'TBD6',
-      // },
-      // {
-      //   name: 'Pokemon Unite',
-      //   currentSeason: 'TBD2',
-      //   lastResetDate: new Date(),
-      //   seasonReset: 'TBD3',
-      //   seasonResetDate: new Date(),
-      //   resetPeriodicity: 'TBD4',
-      //   resetPeriodicityMore: '<a target="_blank" href="">TBD5</a>',
-      //   daysUntilReset: null, // calculated by function calculateDaysUntilReset
-      //   logo: 'TBD6',
-      // },
-      // {
-      //   name: 'Call of Duty: Warzone',
-      //   currentSeason: 'TBD2',
-      //   lastResetDate: new Date(),
-      //   seasonReset: 'TBD3',
-      //   seasonResetDate: new Date(),
-      //   resetPeriodicity: 'TBD4',
-      //   resetPeriodicityMore: '<a target="_blank" href="">TBD5</a>',
-      //   daysUntilReset: null, // calculated by function calculateDaysUntilReset
-      //   logo: 'TBD6',
-      // },
-      // {
-      //   name: 'Teamfight Tactics',
-      //   currentSeason: 'TBD2',
-      //   lastResetDate: new Date(),
-      //   seasonReset: 'TBD3',
-      //   seasonResetDate: new Date(),
-      //   resetPeriodicity: 'TBD4',
-      //   resetPeriodicityMore: '<a target="_blank" href="">TBD5</a>',
-      //   daysUntilReset: null, // calculated by function calculateDaysUntilReset
-      //   logo: 'TBD6',
-      // },
-      // {
-      //   name: 'Valorant',
-      //   currentSeason: 'TBD2',
-      //   lastResetDate: new Date(),
-      //   seasonReset: 'TBD3',
-      //   seasonResetDate: new Date(),
-      //   resetPeriodicity: 'TBD4',
-      //   resetPeriodicityMore: '<a target="_blank" href="">TBD5</a>',
-      //   daysUntilReset: null, // calculated by function calculateDaysUntilReset
-      //   logo: 'TBD6',
-      // },
-      // {
-      //   name: 'DOTA 2',
-      //   currentSeason: 'TBD2',
-      //   lastResetDate: new Date(),
-      //   seasonReset: 'TBD3',
-      //   seasonResetDate: new Date(),
-      //   resetPeriodicity: 'TBD4',
-      //   resetPeriodicityMore: '<a target="_blank" href="">TBD5</a>',
-      //   daysUntilReset: null, // calculated by function calculateDaysUntilReset
-      //   logo: 'TBD6',
-      // },
+      {
+        name: 'MTGA',
+        currentSeason: 'September 2021',
+        lastResetDate: new Date('2021/09/01'),
+        seasonReset: 'End of current month',
+        seasonResetDate: new Date('2021/10/01'),
+        resetPeriodicity: 'Resets every month',
+        resetPeriodicityMore: '<a target="_blank" href="https://magic.gg/events/ranked-play-season">Awards + info</a>',
+        daysUntilReset: null, // calculated by function calculateDaysUntilReset
+        logo: 'gameLogos/mtgaLogo_512.png',
+      },
+      {
+        name: 'Apex Legends',
+        currentSeason: 'Emergence<br>(Season 10)',
+        lastResetDate: new Date('2021/08/03'),
+        seasonReset: new Date('2021/11/02').toLocaleDateString(),
+        seasonResetDate: new Date('2021/11/02'),
+        resetPeriodicity: 'Resets every 3 months',
+        resetPeriodicityMore: '<a target="_blank" href="https://dotesports.com/apex-legends/news/start-end-dates-apex-legends-seasons">Info</a>',
+        daysUntilReset: null, // calculated by function calculateDaysUntilReset
+        logo: 'gameLogos/apexLogo.png',
+      },
+      {
+        name: 'Fortnite',
+        currentSeason: 'Chapter 2<br>Season 8',
+        lastResetDate: new Date('2021/06/08'),
+        seasonReset: new Date('2021/09/12').toLocaleDateString(),
+        seasonResetDate: new Date('2021/09/12'),
+        resetPeriodicity: 'Resets every 4 months aprox.',
+        resetPeriodicityMore: '<a target="_blank" href="https://dotesports.com/fortnite/news/start-end-dates-for-all-fortnite-seasons">Info</a>',
+        daysUntilReset: null, // calculated by function calculateDaysUntilReset
+        logo: 'gameLogos/frtnLogo.png',
+      },
+      {
+        name: 'Overwatch',
+        currentSeason: '30',
+        lastResetDate: new Date('2021/09/02'),
+        seasonReset: 'Estimated<br>Early November',
+        seasonResetDate: new Date('2021/11/02'),
+        resetPeriodicity: 'Resets every 2 months',
+        resetPeriodicityMore: '<a target="_blank" href="https://dotesports.com/overwatch/news/start-end-dates-all-overwatch-seasons">Info</a>',
+        daysUntilReset: null, // calculated by function calculateDaysUntilReset
+        logo: 'gameLogos/ovrwLogo.png',
+      },
+      {
+        name: 'Pokemon Unite',
+        currentSeason: '1',
+        lastResetDate: new Date('2021/07/21'),
+        seasonReset: new Date('2021/09/21').toLocaleDateString(),
+        seasonResetDate: new Date('2021/09/21'),
+        resetPeriodicity: 'Unknown',
+        resetPeriodicityMore: '<a target="_blank" href="https://www.sportskeeda.com/pokemon/news-when-will-pokemon-unite-season-1-end">Info</a>',
+        daysUntilReset: null, // calculated by function calculateDaysUntilReset
+        logo: 'gameLogos/pkmnLogo.png',
+      },
+      {
+        name: 'Call of Duty: Warzone',
+        currentSeason: 'Season 5',
+        lastResetDate: new Date('2021/08/12'),
+        seasonReset: new Date('2021/10/06').toLocaleDateString(),
+        seasonResetDate: new Date('2021/10/06'),
+        resetPeriodicity: 'Resets every 2 months aprox.',
+        resetPeriodicityMore: '<a target="_blank" href="https://gamingintel.com/black-ops-cold-war-warzone-season-6-start-season-5-end-date/#:~:text=According%20to%20the%20official%20Black,end%20on%20Wednesday%2C%20October%206.">Info</a>',
+        daysUntilReset: null, // calculated by function calculateDaysUntilReset
+        logo: 'gameLogos/codLogo.png',
+      },
+      {
+        name: 'Teamfight Tactics',
+        currentSeason: '4 - Stage II',
+        lastResetDate: new Date('2021/07/21'),
+        seasonReset: 'Estimated<br>Late October',
+        seasonResetDate: new Date('2021/10/21'),
+        resetPeriodicity: 'Resets every 3 months aprox.',
+        resetPeriodicityMore: '<a target="_blank" href="https://www.esportstales.com/teamfight-tactics/ranked-season-end-date">Info</a>',
+        daysUntilReset: null, // calculated by function calculateDaysUntilReset
+        logo: 'gameLogos/tftLogo.png',
+      },
+      {
+        name: 'Valorant',
+        currentSeason: 'Episode 3',
+        lastResetDate: new Date('2021/09/08'),
+        seasonReset: 'Estimated<br>November 3rd',
+        seasonResetDate: new Date('2021/11/03'),
+        resetPeriodicity: 'Resets every 2 months',
+        resetPeriodicityMore: '<a target="_blank" href="https://www.sportskeeda.com/valorant/all-act-release-dates-revealed-episode-3-episode-4-valorant">Info</a>',
+        daysUntilReset: null, // calculated by function calculateDaysUntilReset
+        logo: 'gameLogos/vlrLogo.png',
+      },
     ]
 
     const cssText = ``
